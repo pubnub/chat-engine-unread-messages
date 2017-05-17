@@ -4,5 +4,8 @@
   "main": "./plugin.js",
   "open-chat-framework": {
     "namespace": "unread-messages"
+  },
+  "dependencies": {
+    "ocf": "^0.0.2"
   }
 }
