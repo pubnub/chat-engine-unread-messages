@@ -1,5 +1,5 @@
 module.exports = (config) => {
-        
+
     class extension {
 
         construct(data) {
@@ -38,6 +38,7 @@ module.exports = (config) => {
 
     // attach methods to Chat
     return {
+        namespace: 'unread-messages',
         extends: {
             Chat: extension
         }
