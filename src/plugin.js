@@ -12,7 +12,7 @@ module.exports = (config) => {
                 if(!this.isActive) {
 
                     this.parent.unreadCount++;
-                    this.parent.broadcast('$unread', {
+                    this.parent.trigger('$unread', {
                         chat: this.parent,
                         sender: event.sender,
                         event: event
