@@ -29,7 +29,11 @@ module.exports = () => {
 
         construct(data) {
 
-            this.parent.isFocused = false;
+            /**
+            * Adds the property Chat.unreadCount to the applied Chat.
+            * @member unreadMessages"."unreadCount
+            * @ceextends Chat
+            */
             this.parent.unreadCount = 0;
 
             this.parent.on('message', (event) => {
@@ -58,6 +62,12 @@ module.exports = () => {
 
         }
 
+        /**
+        * Indicate that this {@link Chat} is visible to the user.
+        * The property unreadCount is set to 0 and will not increment until inactive() is called.
+        * @method unreadMessages"."active
+        * @ceextends Chat
+        */
         active() {
 
             /**
@@ -68,6 +78,11 @@ module.exports = () => {
             this.parent.unreadCount = 0;
         }
 
+        /**
+        * INdicate that the chat is in the background and unread messages should increment.
+        * @method unreadMessages"."active
+        * @ceextends Chat
+        */
         inactive() {
             this.isActive = false;
         }
