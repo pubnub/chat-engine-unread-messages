@@ -6,7 +6,6 @@
 
 /**
 * @function
-* @param {Chat} chat The {@link Chat} to add the username to. Most likely will be ```globalChat```.
 * @example
 * chat.plugin(ChatEngineCore.plugin['chat-engine-unread-messages']());
 *
@@ -24,7 +23,7 @@
 *     console.log(payload.user, "sent a message you havn't seen in ", payload.chat, "the full event is", payload.event);
 * });
 */
-module.exports = (config) => {
+module.exports = () => {
 
     class extension {
 
