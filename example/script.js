@@ -1,4 +1,3 @@
-/*global document*/
 // In this example we are going to be creating two chat clients
 // One will have the unread-messages plugin connected to the global channel
 // The other will not, allowing you to easily see the diff
@@ -46,14 +45,14 @@ rickClient.on('$.ready', () => {
         rickClient.global.unreadMessages.active();
         document.getElementById('rick-count').innerHTML = rickClient.global.unreadCount || '';
 
-    }
+    };
 
     // mark rick as inactive, which will notify the plugin to start counting again
     rickInactive = function () {
 
         rickClient.global.unreadMessages.inactive();
 
-    }
+    };
 
     // when the plugin emits an unread event, update the UI element
     // bootstap automagically makes it go away if it's '' instead of 0
@@ -62,7 +61,7 @@ rickClient.on('$.ready', () => {
         document.getElementById('rick-count').innerHTML = rickClient.global.unreadCount || '';
 
     });
-    
+
     // * * * * *  end plugin specific code  * * * * *
 
     // use rick's input box value as his message payload and clear it when you hit send
@@ -84,7 +83,7 @@ rickClient.on('$.ready', () => {
         if (e.keyCode === 13) {
             rickSend();
         }
-    }
+    };
 
     // when any message is emitted on the global channel add it to rick's chat log
     rickClient.global.on('message', (payload) => {
@@ -120,12 +119,12 @@ mortyClient.on('$.ready', () => {
         if (e.keyCode === 13) {
             mortySend();
         }
-    }
+    };
 
     // when any message is emitted on the global channel add it to rick's chat log
     mortyClient.global.on('message', (payload) => {
 
-        let div = document.createElement("p");
+        let div = document.createElement('p');
         div.innerHTML = payload.sender.uuid + ': ' + payload.data.text;
         mortyOutput.appendChild(div);
 
