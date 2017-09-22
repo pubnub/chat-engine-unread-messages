@@ -22,11 +22,15 @@ let mortySubmit = function () {};
 const rickClient = ChatEngineCore.create({
     publishKey: 'pub-c-bcf4e625-d5e0-45de-9f74-f222bf63a4a1',
     subscribeKey: 'sub-c-70f29a7c-8927-11e7-af73-96e8309537a2',
+}, {
+    globalChannel: 'unread-messages-example'
 });
 
 const mortyClient = ChatEngineCore.create({
     publishKey: 'pub-c-bcf4e625-d5e0-45de-9f74-f222bf63a4a1',
     subscribeKey: 'sub-c-70f29a7c-8927-11e7-af73-96e8309537a2',
+}, {
+    globalChannel: 'unread-messages-example'
 });
 
 // connect Rick to the network, and when it is successful, do some stuff

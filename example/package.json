@@ -1,7 +1,7 @@
 {
   "name": "example",
   "version": "0.0.1",
-  "description": "![alt gifs are awesome, right?](output.gif)",
+  "description": "",
   "main": "index.html",
   "dependencies": {
     "chat-engine": "^0.4.2",
