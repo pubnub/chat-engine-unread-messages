@@ -3,25 +3,9 @@
 ![alt gifs are awesome, right?](output.gif)
 
 ## How to run
-
-Service the root directory with a static file server
-
-### Python
-
+Install the dependencies and start a local web server
 ```sh
-python -m SimpleHTTPServer &
-```
-
-### Node
-
-Install ```http-server```
-
-```sh
-npm install http-server -g
-```
-
-Run ```http-server``` in the example directory
-
-```sh
+npm install 
 http-server
 ```
+Then navigate to the URL the web server provides
