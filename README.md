@@ -4,7 +4,7 @@ Adds the ability to count unread messages in ChatEngine.Chats
 
 ### Quick Start
 
-0. Have chat engine instatiated and connected and have a channel you want to count unread messages on
+0. Have ChatEngine instnatiated and connected, and have a channel you want to count unread messages on
 ```javascript
 const CE = ChatEngineCore.create({
     publishKey: 'pub-key-here',
