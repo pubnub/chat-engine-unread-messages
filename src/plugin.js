@@ -30,6 +30,13 @@ module.exports = () => {
         construct(data) {
 
             /**
+            * Adds the property Chat.isActive to the applied Chat.
+            * @member unreadMessages"."isActive
+            * @ceextends Chat
+            */
+            this.parent.isActive = false;
+
+            /**
             * Adds the property Chat.unreadCount to the applied Chat.
             * @member unreadMessages"."unreadCount
             * @ceextends Chat
