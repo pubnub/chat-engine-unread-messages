@@ -1,6 +1,6 @@
 # Unread Messages Plugin
 
-Adds the ability to count unread messages in ChatEngine.Chats
+Adds the ability to count unread messages in ChatEngine chats
 
 ### Quick Start
 
@@ -11,7 +11,7 @@ const CE = ChatEngineCore.create({
     subscribeKey: 'sub-key-here',
 });
 
-CE.connect('Username');
+CE.connect('username-here');
 CE.on('$.ready', () => { ... }
 ```
 
@@ -20,7 +20,7 @@ CE.on('$.ready', () => { ... }
 CE.global.plugin(ChatEngineCore.plugin['chat-engine-unread-messages']());
 ```
 
-2. The plugin needs to be notified when the user is considered active or inactive to properly count messages  
+2. The plugin needs to be notified when the user is considered active or inactive to properly count messages
 ```javascript
 // sets unreadCount to 0, stops counting unread messages and stops emitting events
 CE.global.unreadMessages.active();
@@ -30,7 +30,7 @@ CE.global.unreadMessages.active();
 CE.global.unreadMessages.inactive();
 ```
 
-3. Listen for the `$unread` events that emit whenever your channel recieves a message while it is marked as inactive  
+3. Listen for the `$unread` events that emit whenever your channel recieves a message while it is marked as inactive
 ```javascript
 CE.global.on('$unread', () => {
     console.log(ChatEngine.global.unreadCount);
