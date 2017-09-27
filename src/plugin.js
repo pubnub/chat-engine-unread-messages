@@ -19,7 +19,7 @@
 * chat.unread;
 * // 4
 *
-* chat.on('$unread', (payload) -> {
+* chat.on('$unread', (payload) => {
 *     console.log(payload.user, "sent a message you havn't seen in ", payload.chat, "the full event is", payload.event);
 * });
 */
