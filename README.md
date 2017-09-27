@@ -1,6 +1,6 @@
 # Unread Messages Plugin
 
-Adds the ability to count unread messages in a ChatEngine chat
+Adds the ability to count unread messages in a ChatEngine Chat
 
 ### Quick Start
 
