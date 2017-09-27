@@ -2,12 +2,6 @@
 // One will have the unread-messages plugin connected to the global channel
 // The other will not, allowing you to easily see the diff
 
-// get some references to our UI elements
-const rickInput = document.getElementById('rick-input');
-const rickOutput = document.getElementById('rick-output');
-const mortyInput = document.getElementById('morty-input');
-const mortyOutput = document.getElementById('morty-output');
-
 // get some references to functions
 let rickSend = function () {};
 let rickSubmit = function () {};
@@ -47,7 +41,7 @@ rickClient.on('$.ready', () => {
     rickActive = function () {
 
         rickClient.global.unreadMessages.active();
-        document.getElementById('rick-count').innerHTML = rickClient.global.unreadCount || '';
+        $('#rick-count').html(rickClient.global.unreadCount || '');
 
     };
 
@@ -62,7 +56,7 @@ rickClient.on('$.ready', () => {
     // bootstap automagically makes it go away if it's '' instead of 0
     rickClient.global.on('$unread', () => {
 
-        document.getElementById('rick-count').innerHTML = rickClient.global.unreadCount || '';
+        $('#rick-count').html(rickClient.global.unreadCount || '');
 
     });
 
@@ -72,10 +66,10 @@ rickClient.on('$.ready', () => {
     rickSend = function () {
 
         rickClient.global.emit('message', {
-            text: rickInput.value
+            text: $('#rick-input').val()
         });
 
-        rickInput.value = '';
+        $('#rick-input').val('');
 
         return false;
 
@@ -92,9 +86,7 @@ rickClient.on('$.ready', () => {
     // when any message is emitted on the global channel add it to rick's chat log
     rickClient.global.on('message', (payload) => {
 
-        let div = document.createElement('p');
-        div.innerHTML = payload.sender.uuid + ': ' + payload.data.text;
-        rickOutput.appendChild(div);
+        $('#rick-output').append($('<p><strong>' + payload.sender.uuid + ':</strong> ' + payload.data.text + '</p>'));
 
     });
 
@@ -108,10 +100,10 @@ mortyClient.on('$.ready', () => {
     mortySend = function () {
 
         mortyClient.global.emit('message', {
-            text: mortyInput.value
+            text: $('#morty-input').val()
         });
 
-        mortyInput.value = '';
+        $('#morty-input').val('');
 
         return false;
 
@@ -128,9 +120,7 @@ mortyClient.on('$.ready', () => {
     // when any message is emitted on the global channel add it to rick's chat log
     mortyClient.global.on('message', (payload) => {
 
-        let div = document.createElement('p');
-        div.innerHTML = payload.sender.uuid + ': ' + payload.data.text;
-        mortyOutput.appendChild(div);
+        $('#morty-output').append($('<p><strong>' + payload.sender.uuid + ':</strong> ' + payload.data.text + '</p>'));
 
     });
 
