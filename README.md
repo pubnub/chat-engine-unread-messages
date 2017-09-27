@@ -11,7 +11,7 @@ const ChatEngine = ChatEngineCore.create({
     subscribeKey: 'sub-key-here',
 });
 
-ChatEngine.connect('username-here');
+ChatEngine.connect('Username');
 ChatEngine.on('$.ready', () => { ... });
 ```
 
