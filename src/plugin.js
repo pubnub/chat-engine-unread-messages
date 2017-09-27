@@ -1,7 +1,7 @@
 /**
 * Emits the ```$unread``` event on a {@link Chat} when a ```message``` event is received and the Chat is not marked as active.
 * @module chat-engine-unread-messages
-* @ceplugin
+* @requires {@link ChatEngine}
 */
 
 /**
