@@ -1,7 +1,7 @@
 {
   "author": "Ian Jennings",
   "name": "chat-engine-unread-messages",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "src/plugin.js",
   "dependencies": {
     "chat-engine": "^0.2.1"
