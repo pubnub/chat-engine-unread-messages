@@ -14,21 +14,23 @@ let mortySubmit = function () {};
 // typically you will not do this more than once in a client side app,
 // but we're having two users use the same page here
 const rickClient = ChatEngineCore.create({
-    publishKey: 'pub-c-bcf4e625-d5e0-45de-9f74-f222bf63a4a1',
-    subscribeKey: 'sub-c-70f29a7c-8927-11e7-af73-96e8309537a2',
+    publishKey: 'pub-c-c6303bb2-8bf8-4417-aac7-e83b52237ea6',
+    subscribeKey: 'sub-c-67db0e7a-50be-11e7-bf50-02ee2ddab7fe',
 }, {
+    endpoint: 'http://localhost:3000/insecure',
     globalChannel: 'unread-messages-example'
 });
 
 const mortyClient = ChatEngineCore.create({
-    publishKey: 'pub-c-bcf4e625-d5e0-45de-9f74-f222bf63a4a1',
-    subscribeKey: 'sub-c-70f29a7c-8927-11e7-af73-96e8309537a2',
+    publishKey: 'pub-c-c6303bb2-8bf8-4417-aac7-e83b52237ea6',
+    subscribeKey: 'sub-c-67db0e7a-50be-11e7-bf50-02ee2ddab7fe',
 }, {
+    endpoint: 'http://localhost:3000/insecure',
     globalChannel: 'unread-messages-example'
 });
 
 // connect Rick to the network, and when it is successful, do some stuff
-rickClient.connect('Rick');
+rickClient.connect('Rick', {}, 'auth-key-rick');
 
 rickClient.on('$.ready', () => {
 
@@ -93,7 +95,7 @@ rickClient.on('$.ready', () => {
 });
 
 // connect Morty to the network, and when it is successful, do less stuff
-mortyClient.connect('Morty');
+mortyClient.connect('Morty', {}, 'auth-key-morty');
 mortyClient.on('$.ready', () => {
 
     // use morty's input box value as his message payload and clear it when you hit send
