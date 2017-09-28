@@ -1,7 +1,7 @@
 /**
 * Emits the ```$unread``` event on a {@link Chat} when a ```message``` event is received and the Chat is not marked as active.
 * @module chat-engine-unread-messages
-* @ceplugin
+* @requires {@link ChatEngine}
 */
 
 /**
@@ -19,7 +19,7 @@
 * chat.unread;
 * // 4
 *
-* chat.on('$unread', (payload) -> {
+* chat.on('$unread', (payload) => {
 *     console.log(payload.user, "sent a message you havn't seen in ", payload.chat, "the full event is", payload.event);
 * });
 */
