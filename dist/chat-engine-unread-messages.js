@@ -10,21 +10,57 @@
 module.exports={
   "author": "Ian Jennings",
   "name": "chat-engine-unread-messages",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "main": "src/plugin.js",
   "dependencies": {
-    "chat-engine": "0.2.x"
+    "chat-engine": "^0.5.2"
   }
 }
 
 },{}],3:[function(require,module,exports){
-module.exports = (config) => {
+/**
+* Emits the ```$unread``` event on a {@link Chat} when a ```message``` event is received and the Chat is not marked as active.
+* @module chat-engine-unread-messages
+* @requires {@link ChatEngine}
+*/
+
+/**
+* @function
+* @example
+* chat.plugin(ChatEngineCore.plugin['chat-engine-unread-messages']());
+*
+* // focused on the chatroom
+* chat.unreadMessages.active();
+*
+* // looking at any other chatroom
+* chat.unreadMessages.inactive();
+*
+* // unread count
+* chat.unread;
+* // 4
+*
+* chat.on('$unread', (payload) => {
+*     console.log(payload.user, "sent a message you havn't seen in ", payload.chat, "the full event is", payload.event);
+* });
+*/
+module.exports = () => {
 
     class extension {
 
         construct(data) {
 
-            this.parent.isFocused = false;
+            /**
+            * Adds the property Chat.isActive to the applied Chat.
+            * @member unreadMessages"."isActive
+            * @ceextends Chat
+            */
+            this.parent.isActive = false;
+
+            /**
+            * Adds the property Chat.unreadCount to the applied Chat.
+            * @member unreadMessages"."unreadCount
+            * @ceextends Chat
+            */
             this.parent.unreadCount = 0;
 
             this.parent.on('message', (event) => {
@@ -32,6 +68,15 @@ module.exports = (config) => {
                 if(!this.isActive) {
 
                     this.parent.unreadCount++;
+
+                    /**
+                    * @ceextends Chat
+                    * @event $unread
+                    * @param {Object} payload
+                    * @param {Chat} chat This chat
+                    * @param {User} sender The sender of the unread message
+                    * @param {Object} event The raw ```message``` event.
+                    */
                     this.parent.trigger('$unread', {
                         chat: this.parent,
                         sender: event.sender,
@@ -44,12 +89,27 @@ module.exports = (config) => {
 
         }
 
+        /**
+        * Indicate that this {@link Chat} is visible to the user.
+        * The property unreadCount is set to 0 and will not increment until inactive() is called.
+        * @method unreadMessages"."active
+        * @ceextends Chat
+        */
         active() {
 
+            /**
+            @member unreadCount
+            @ceextends Chat
+            */
             this.isActive = true;
             this.parent.unreadCount = 0;
         }
 
+        /**
+        * INdicate that the chat is in the background and unread messages should increment.
+        * @method unreadMessages"."active
+        * @ceextends Chat
+        */
         inactive() {
             this.isActive = false;
         }
@@ -67,4 +127,4 @@ module.exports = (config) => {
 }
 
 },{}]},{},[1])
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy5udm0vdmVyc2lvbnMvbm9kZS92Ni43LjAvbGliL25vZGVfbW9kdWxlcy9jaGF0LWVuZ2luZS1wbHVnaW4vbm9kZV9tb2R1bGVzL2Jyb3dzZXItcGFjay9fcHJlbHVkZS5qcyIsIi50bXAvd3JhcC5qcyIsInBhY2thZ2UuanNvbiIsInNyYy9wbHVnaW4uanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUNBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUNOQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUNUQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJmaWxlIjoiZ2VuZXJhdGVkLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXNDb250ZW50IjpbIihmdW5jdGlvbiBlKHQsbixyKXtmdW5jdGlvbiBzKG8sdSl7aWYoIW5bb10pe2lmKCF0W29dKXt2YXIgYT10eXBlb2YgcmVxdWlyZT09XCJmdW5jdGlvblwiJiZyZXF1aXJlO2lmKCF1JiZhKXJldHVybiBhKG8sITApO2lmKGkpcmV0dXJuIGkobywhMCk7dmFyIGY9bmV3IEVycm9yKFwiQ2Fubm90IGZpbmQgbW9kdWxlICdcIitvK1wiJ1wiKTt0aHJvdyBmLmNvZGU9XCJNT0RVTEVfTk9UX0ZPVU5EXCIsZn12YXIgbD1uW29dPXtleHBvcnRzOnt9fTt0W29dWzBdLmNhbGwobC5leHBvcnRzLGZ1bmN0aW9uKGUpe3ZhciBuPXRbb11bMV1bZV07cmV0dXJuIHMobj9uOmUpfSxsLGwuZXhwb3J0cyxlLHQsbixyKX1yZXR1cm4gbltvXS5leHBvcnRzfXZhciBpPXR5cGVvZiByZXF1aXJlPT1cImZ1bmN0aW9uXCImJnJlcXVpcmU7Zm9yKHZhciBvPTA7bzxyLmxlbmd0aDtvKyspcyhyW29dKTtyZXR1cm4gc30pIiwiKGZ1bmN0aW9uKCkge1xuXG4gICAgY29uc3QgcGFja2FnZSA9IHJlcXVpcmUoJy4uL3BhY2thZ2UuanNvbicpO1xuICAgIHdpbmRvdy5DaGF0RW5naW5lQ29yZS5wbHVnaW5bcGFja2FnZS5uYW1lXSA9IHJlcXVpcmUoJy4uL3NyYy9wbHVnaW4uanMnKTtcblxufSkoKTtcbiIsIm1vZHVsZS5leHBvcnRzPXtcbiAgXCJhdXRob3JcIjogXCJJYW4gSmVubmluZ3NcIixcbiAgXCJuYW1lXCI6IFwiY2hhdC1lbmdpbmUtdW5yZWFkLW1lc3NhZ2VzXCIsXG4gIFwidmVyc2lvblwiOiBcIjAuMC41XCIsXG4gIFwibWFpblwiOiBcInNyYy9wbHVnaW4uanNcIixcbiAgXCJkZXBlbmRlbmNpZXNcIjoge1xuICAgIFwiY2hhdC1lbmdpbmVcIjogXCIwLjIueFwiXG4gIH1cbn1cbiIsIm1vZHVsZS5leHBvcnRzID0gKGNvbmZpZykgPT4ge1xuXG4gICAgY2xhc3MgZXh0ZW5zaW9uIHtcblxuICAgICAgICBjb25zdHJ1Y3QoZGF0YSkge1xuXG4gICAgICAgICAgICB0aGlzLnBhcmVudC5pc0ZvY3VzZWQgPSBmYWxzZTtcbiAgICAgICAgICAgIHRoaXMucGFyZW50LnVucmVhZENvdW50ID0gMDtcblxuICAgICAgICAgICAgdGhpcy5wYXJlbnQub24oJ21lc3NhZ2UnLCAoZXZlbnQpID0+IHtcblxuICAgICAgICAgICAgICAgIGlmKCF0aGlzLmlzQWN0aXZlKSB7XG5cbiAgICAgICAgICAgICAgICAgICAgdGhpcy5wYXJlbnQudW5yZWFkQ291bnQrKztcbiAgICAgICAgICAgICAgICAgICAgdGhpcy5wYXJlbnQudHJpZ2dlcignJHVucmVhZCcsIHtcbiAgICAgICAgICAgICAgICAgICAgICAgIGNoYXQ6IHRoaXMucGFyZW50LFxuICAgICAgICAgICAgICAgICAgICAgICAgc2VuZGVyOiBldmVudC5zZW5kZXIsXG4gICAgICAgICAgICAgICAgICAgICAgICBldmVudDogZXZlbnRcbiAgICAgICAgICAgICAgICAgICAgfSk7XG5cbiAgICAgICAgICAgICAgICB9XG5cbiAgICAgICAgICAgIH0pO1xuXG4gICAgICAgIH1cblxuICAgICAgICBhY3RpdmUoKSB7XG5cbiAgICAgICAgICAgIHRoaXMuaXNBY3RpdmUgPSB0cnVlO1xuICAgICAgICAgICAgdGhpcy5wYXJlbnQudW5yZWFkQ291bnQgPSAwO1xuICAgICAgICB9XG5cbiAgICAgICAgaW5hY3RpdmUoKSB7XG4gICAgICAgICAgICB0aGlzLmlzQWN0aXZlID0gZmFsc2U7XG4gICAgICAgIH1cblxuICAgIH07XG5cbiAgICAvLyBhdHRhY2ggbWV0aG9kcyB0byBDaGF0XG4gICAgcmV0dXJuIHtcbiAgICAgICAgbmFtZXNwYWNlOiAndW5yZWFkTWVzc2FnZXMnLFxuICAgICAgICBleHRlbmRzOiB7XG4gICAgICAgICAgICBDaGF0OiBleHRlbnNpb25cbiAgICAgICAgfVxuICAgIH1cblxufVxuIl19
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy5udm0vdmVyc2lvbnMvbm9kZS92Ni4xMS4wL2xpYi9ub2RlX21vZHVsZXMvY2hhdC1lbmdpbmUtcGx1Z2luL25vZGVfbW9kdWxlcy9icm93c2VyLXBhY2svX3ByZWx1ZGUuanMiLCIudG1wL3dyYXAuanMiLCJwYWNrYWdlLmpzb24iLCJzcmMvcGx1Z2luLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FDQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FDTkE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FDVEE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwiZmlsZSI6ImdlbmVyYXRlZC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzQ29udGVudCI6WyIoZnVuY3Rpb24gZSh0LG4scil7ZnVuY3Rpb24gcyhvLHUpe2lmKCFuW29dKXtpZighdFtvXSl7dmFyIGE9dHlwZW9mIHJlcXVpcmU9PVwiZnVuY3Rpb25cIiYmcmVxdWlyZTtpZighdSYmYSlyZXR1cm4gYShvLCEwKTtpZihpKXJldHVybiBpKG8sITApO3ZhciBmPW5ldyBFcnJvcihcIkNhbm5vdCBmaW5kIG1vZHVsZSAnXCIrbytcIidcIik7dGhyb3cgZi5jb2RlPVwiTU9EVUxFX05PVF9GT1VORFwiLGZ9dmFyIGw9bltvXT17ZXhwb3J0czp7fX07dFtvXVswXS5jYWxsKGwuZXhwb3J0cyxmdW5jdGlvbihlKXt2YXIgbj10W29dWzFdW2VdO3JldHVybiBzKG4/bjplKX0sbCxsLmV4cG9ydHMsZSx0LG4scil9cmV0dXJuIG5bb10uZXhwb3J0c312YXIgaT10eXBlb2YgcmVxdWlyZT09XCJmdW5jdGlvblwiJiZyZXF1aXJlO2Zvcih2YXIgbz0wO288ci5sZW5ndGg7bysrKXMocltvXSk7cmV0dXJuIHN9KSIsIihmdW5jdGlvbigpIHtcblxuICAgIGNvbnN0IHBhY2thZ2UgPSByZXF1aXJlKCcuLi9wYWNrYWdlLmpzb24nKTtcbiAgICB3aW5kb3cuQ2hhdEVuZ2luZUNvcmUucGx1Z2luW3BhY2thZ2UubmFtZV0gPSByZXF1aXJlKCcuLi9zcmMvcGx1Z2luLmpzJyk7XG5cbn0pKCk7XG4iLCJtb2R1bGUuZXhwb3J0cz17XG4gIFwiYXV0aG9yXCI6IFwiSWFuIEplbm5pbmdzXCIsXG4gIFwibmFtZVwiOiBcImNoYXQtZW5naW5lLXVucmVhZC1tZXNzYWdlc1wiLFxuICBcInZlcnNpb25cIjogXCIwLjAuN1wiLFxuICBcIm1haW5cIjogXCJzcmMvcGx1Z2luLmpzXCIsXG4gIFwiZGVwZW5kZW5jaWVzXCI6IHtcbiAgICBcImNoYXQtZW5naW5lXCI6IFwiXjAuNS4yXCJcbiAgfVxufVxuIiwiLyoqXG4qIEVtaXRzIHRoZSBgYGAkdW5yZWFkYGBgIGV2ZW50IG9uIGEge0BsaW5rIENoYXR9IHdoZW4gYSBgYGBtZXNzYWdlYGBgIGV2ZW50IGlzIHJlY2VpdmVkIGFuZCB0aGUgQ2hhdCBpcyBub3QgbWFya2VkIGFzIGFjdGl2ZS5cbiogQG1vZHVsZSBjaGF0LWVuZ2luZS11bnJlYWQtbWVzc2FnZXNcbiogQHJlcXVpcmVzIHtAbGluayBDaGF0RW5naW5lfVxuKi9cblxuLyoqXG4qIEBmdW5jdGlvblxuKiBAZXhhbXBsZVxuKiBjaGF0LnBsdWdpbihDaGF0RW5naW5lQ29yZS5wbHVnaW5bJ2NoYXQtZW5naW5lLXVucmVhZC1tZXNzYWdlcyddKCkpO1xuKlxuKiAvLyBmb2N1c2VkIG9uIHRoZSBjaGF0cm9vbVxuKiBjaGF0LnVucmVhZE1lc3NhZ2VzLmFjdGl2ZSgpO1xuKlxuKiAvLyBsb29raW5nIGF0IGFueSBvdGhlciBjaGF0cm9vbVxuKiBjaGF0LnVucmVhZE1lc3NhZ2VzLmluYWN0aXZlKCk7XG4qXG4qIC8vIHVucmVhZCBjb3VudFxuKiBjaGF0LnVucmVhZDtcbiogLy8gNFxuKlxuKiBjaGF0Lm9uKCckdW5yZWFkJywgKHBheWxvYWQpID0+IHtcbiogICAgIGNvbnNvbGUubG9nKHBheWxvYWQudXNlciwgXCJzZW50IGEgbWVzc2FnZSB5b3UgaGF2bid0IHNlZW4gaW4gXCIsIHBheWxvYWQuY2hhdCwgXCJ0aGUgZnVsbCBldmVudCBpc1wiLCBwYXlsb2FkLmV2ZW50KTtcbiogfSk7XG4qL1xubW9kdWxlLmV4cG9ydHMgPSAoKSA9PiB7XG5cbiAgICBjbGFzcyBleHRlbnNpb24ge1xuXG4gICAgICAgIGNvbnN0cnVjdChkYXRhKSB7XG5cbiAgICAgICAgICAgIC8qKlxuICAgICAgICAgICAgKiBBZGRzIHRoZSBwcm9wZXJ0eSBDaGF0LmlzQWN0aXZlIHRvIHRoZSBhcHBsaWVkIENoYXQuXG4gICAgICAgICAgICAqIEBtZW1iZXIgdW5yZWFkTWVzc2FnZXNcIi5cImlzQWN0aXZlXG4gICAgICAgICAgICAqIEBjZWV4dGVuZHMgQ2hhdFxuICAgICAgICAgICAgKi9cbiAgICAgICAgICAgIHRoaXMucGFyZW50LmlzQWN0aXZlID0gZmFsc2U7XG5cbiAgICAgICAgICAgIC8qKlxuICAgICAgICAgICAgKiBBZGRzIHRoZSBwcm9wZXJ0eSBDaGF0LnVucmVhZENvdW50IHRvIHRoZSBhcHBsaWVkIENoYXQuXG4gICAgICAgICAgICAqIEBtZW1iZXIgdW5yZWFkTWVzc2FnZXNcIi5cInVucmVhZENvdW50XG4gICAgICAgICAgICAqIEBjZWV4dGVuZHMgQ2hhdFxuICAgICAgICAgICAgKi9cbiAgICAgICAgICAgIHRoaXMucGFyZW50LnVucmVhZENvdW50ID0gMDtcblxuICAgICAgICAgICAgdGhpcy5wYXJlbnQub24oJ21lc3NhZ2UnLCAoZXZlbnQpID0+IHtcblxuICAgICAgICAgICAgICAgIGlmKCF0aGlzLmlzQWN0aXZlKSB7XG5cbiAgICAgICAgICAgICAgICAgICAgdGhpcy5wYXJlbnQudW5yZWFkQ291bnQrKztcblxuICAgICAgICAgICAgICAgICAgICAvKipcbiAgICAgICAgICAgICAgICAgICAgKiBAY2VleHRlbmRzIENoYXRcbiAgICAgICAgICAgICAgICAgICAgKiBAZXZlbnQgJHVucmVhZFxuICAgICAgICAgICAgICAgICAgICAqIEBwYXJhbSB7T2JqZWN0fSBwYXlsb2FkXG4gICAgICAgICAgICAgICAgICAgICogQHBhcmFtIHtDaGF0fSBjaGF0IFRoaXMgY2hhdFxuICAgICAgICAgICAgICAgICAgICAqIEBwYXJhbSB7VXNlcn0gc2VuZGVyIFRoZSBzZW5kZXIgb2YgdGhlIHVucmVhZCBtZXNzYWdlXG4gICAgICAgICAgICAgICAgICAgICogQHBhcmFtIHtPYmplY3R9IGV2ZW50IFRoZSByYXcgYGBgbWVzc2FnZWBgYCBldmVudC5cbiAgICAgICAgICAgICAgICAgICAgKi9cbiAgICAgICAgICAgICAgICAgICAgdGhpcy5wYXJlbnQudHJpZ2dlcignJHVucmVhZCcsIHtcbiAgICAgICAgICAgICAgICAgICAgICAgIGNoYXQ6IHRoaXMucGFyZW50LFxuICAgICAgICAgICAgICAgICAgICAgICAgc2VuZGVyOiBldmVudC5zZW5kZXIsXG4gICAgICAgICAgICAgICAgICAgICAgICBldmVudDogZXZlbnRcbiAgICAgICAgICAgICAgICAgICAgfSk7XG5cbiAgICAgICAgICAgICAgICB9XG5cbiAgICAgICAgICAgIH0pO1xuXG4gICAgICAgIH1cblxuICAgICAgICAvKipcbiAgICAgICAgKiBJbmRpY2F0ZSB0aGF0IHRoaXMge0BsaW5rIENoYXR9IGlzIHZpc2libGUgdG8gdGhlIHVzZXIuXG4gICAgICAgICogVGhlIHByb3BlcnR5IHVucmVhZENvdW50IGlzIHNldCB0byAwIGFuZCB3aWxsIG5vdCBpbmNyZW1lbnQgdW50aWwgaW5hY3RpdmUoKSBpcyBjYWxsZWQuXG4gICAgICAgICogQG1ldGhvZCB1bnJlYWRNZXNzYWdlc1wiLlwiYWN0aXZlXG4gICAgICAgICogQGNlZXh0ZW5kcyBDaGF0XG4gICAgICAgICovXG4gICAgICAgIGFjdGl2ZSgpIHtcblxuICAgICAgICAgICAgLyoqXG4gICAgICAgICAgICBAbWVtYmVyIHVucmVhZENvdW50XG4gICAgICAgICAgICBAY2VleHRlbmRzIENoYXRcbiAgICAgICAgICAgICovXG4gICAgICAgICAgICB0aGlzLmlzQWN0aXZlID0gdHJ1ZTtcbiAgICAgICAgICAgIHRoaXMucGFyZW50LnVucmVhZENvdW50ID0gMDtcbiAgICAgICAgfVxuXG4gICAgICAgIC8qKlxuICAgICAgICAqIElOZGljYXRlIHRoYXQgdGhlIGNoYXQgaXMgaW4gdGhlIGJhY2tncm91bmQgYW5kIHVucmVhZCBtZXNzYWdlcyBzaG91bGQgaW5jcmVtZW50LlxuICAgICAgICAqIEBtZXRob2QgdW5yZWFkTWVzc2FnZXNcIi5cImFjdGl2ZVxuICAgICAgICAqIEBjZWV4dGVuZHMgQ2hhdFxuICAgICAgICAqL1xuICAgICAgICBpbmFjdGl2ZSgpIHtcbiAgICAgICAgICAgIHRoaXMuaXNBY3RpdmUgPSBmYWxzZTtcbiAgICAgICAgfVxuXG4gICAgfTtcblxuICAgIC8vIGF0dGFjaCBtZXRob2RzIHRvIENoYXRcbiAgICByZXR1cm4ge1xuICAgICAgICBuYW1lc3BhY2U6ICd1bnJlYWRNZXNzYWdlcycsXG4gICAgICAgIGV4dGVuZHM6IHtcbiAgICAgICAgICAgIENoYXQ6IGV4dGVuc2lvblxuICAgICAgICB9XG4gICAgfVxuXG59XG4iXX0=
