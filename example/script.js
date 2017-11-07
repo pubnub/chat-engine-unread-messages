@@ -14,19 +14,13 @@ let mortySubmit = function () {};
 // typically you will not do this more than once in a client side app,
 // but we're having two users use the same page here
 const rickClient = ChatEngineCore.create({
-    publishKey: 'pub-c-c6303bb2-8bf8-4417-aac7-e83b52237ea6',
-    subscribeKey: 'sub-c-67db0e7a-50be-11e7-bf50-02ee2ddab7fe',
-}, {
-    endpoint: 'http://localhost:3000/insecure',
-    globalChannel: 'unread-messages-example'
+    publishKey: 'pub-c-ba506880-c7fc-4ed7-9cbc-84b251947faf',
+    subscribeKey: 'sub-c-26bd01b2-c3f2-11e7-a957-6e5a35a6e3d1'
 });
 
 const mortyClient = ChatEngineCore.create({
-    publishKey: 'pub-c-c6303bb2-8bf8-4417-aac7-e83b52237ea6',
-    subscribeKey: 'sub-c-67db0e7a-50be-11e7-bf50-02ee2ddab7fe',
-}, {
-    endpoint: 'http://localhost:3000/insecure',
-    globalChannel: 'unread-messages-example'
+    publishKey: 'pub-c-ba506880-c7fc-4ed7-9cbc-84b251947faf',
+    subscribeKey: 'sub-c-26bd01b2-c3f2-11e7-a957-6e5a35a6e3d1'
 });
 
 // connect Rick to the network, and when it is successful, do some stuff
@@ -56,7 +50,11 @@ rickClient.on('$.ready', () => {
 
     // when the plugin emits an unread event, update the UI element
     // bootstap automagically makes it go away if it's '' instead of 0
-    rickClient.global.on('$unread', () => {
+    rickClient.global.on('$unread', (payload) => {
+
+        console.log(payload)
+
+        console.log(payload.sender)
 
         $('#rick-count').html(rickClient.global.unreadCount || '');
 
