@@ -59,7 +59,7 @@ module.exports = () => {
                     */
                     this.parent.trigger('$unread', {
                         chat: this.parent,
-                        sender: event.sender,
+                        sender: event.sender.uuid,
                         event: event
                     });
 
@@ -86,7 +86,7 @@ module.exports = () => {
         }
 
         /**
-        * INdicate that the chat is in the background and unread messages should increment.
+        * Indicate that the chat is in the background and unread messages should increment.
         * @method unreadMessages"."active
         * @ceextends Chat
         */
