@@ -1,6 +1,20 @@
 // In this example we are going to be creating two chat clients
 // One will have the unread-messages plugin connected to the global channel
 // The other will not, allowing you to easily see the diff
+const YOUR_PUBLISH_KEY = '';
+const YOUR_SUBSCRIBE_KEY = '';
+
+// just making sure you're paying attention
+if (YOUR_PUBLISH_KEY === '' || YOUR_SUBSCRIBE_KEY === 0) {
+    alert('You forgot to enter your keys');
+}
+
+//    ________          __  ______            _          
+//   / ____/ /_  ____ _/ /_/ ____/___  ____ _(_)___  ___ 
+//  / /   / __ \/ __ `/ __/ __/ / __ \/ __ `/ / __ \/ _ \
+// / /___/ / / / /_/ / /_/ /___/ / / / /_/ / / / / /  __/
+// \____/_/ /_/\__,_/\__/_____/_/ /_/\__, /_/_/ /_/\___/ 
+//                                  /____/               
 
 // get some references to functions
 let rickSend = function () {};
@@ -14,13 +28,13 @@ let mortySubmit = function () {};
 // typically you will not do this more than once in a client side app,
 // but we're having two users use the same page here
 const rickClient = ChatEngineCore.create({
-    publishKey: 'pub-c-2d798b67-5637-4429-baaa-f7a559763cd8',
-    subscribeKey: 'sub-c-c12ea6c2-c4ee-11e7-b2fd-1e2f18d1069d'
+    publishKey: YOUR_PUBLISH_KEY,
+    subscribeKey: YOUR_SUBSCRIBE_KEY
 });
 
 const mortyClient = ChatEngineCore.create({
-    publishKey: 'pub-c-2d798b67-5637-4429-baaa-f7a559763cd8',
-    subscribeKey: 'sub-c-c12ea6c2-c4ee-11e7-b2fd-1e2f18d1069d'
+    publishKey: YOUR_PUBLISH_KEY,
+    subscribeKey: YOUR_SUBSCRIBE_KEY
 });
 
 // connect Rick to the network, and when it is successful, do some stuff
