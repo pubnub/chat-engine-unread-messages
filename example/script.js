@@ -1,20 +1,23 @@
 // In this example we are going to be creating two chat clients
 // One will have the unread-messages plugin connected to the global channel
 // The other will not, allowing you to easily see the diff
-const YOUR_PUBLISH_KEY = '';
-const YOUR_SUBSCRIBE_KEY = '';
+// const YOUR_PUBLISH_KEY = '';
+// const YOUR_SUBSCRIBE_KEY = '';
+
+const YOUR_PUBLISH_KEY = 'pub-c-01491c54-379f-4d4a-b20b-9a03c24447c7';
+const YOUR_SUBSCRIBE_KEY = 'sub-c-eaf4a984-4356-11e8-91e7-8ad1b2d46395';
 
 // just making sure you're paying attention
 if (YOUR_PUBLISH_KEY === '' || YOUR_SUBSCRIBE_KEY === 0) {
     alert('You forgot to enter your keys');
 }
 
-//    ________          __  ______            _          
-//   / ____/ /_  ____ _/ /_/ ____/___  ____ _(_)___  ___ 
+//    ________          __  ______            _
+//   / ____/ /_  ____ _/ /_/ ____/___  ____ _(_)___  ___
 //  / /   / __ \/ __ `/ __/ __/ / __ \/ __ `/ / __ \/ _ \
 // / /___/ / / / /_/ / /_/ /___/ / / / /_/ / / / / /  __/
-// \____/_/ /_/\__,_/\__/_____/_/ /_/\__, /_/_/ /_/\___/ 
-//                                  /____/               
+// \____/_/ /_/\__,_/\__/_____/_/ /_/\__, /_/_/ /_/\___/
+//                                  /____/
 
 // get some references to functions
 let rickSend = function () {};
