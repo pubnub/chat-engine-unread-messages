@@ -1,4 +1,5 @@
 /**
+* @overview The Unread Message Counts Plugin allows you to count the number of unread messages. <br><img src="plugins/chat-engine-unread-messages/output.gif" height="400"></img><br>
 * Emits the ```$unread``` event on a {@link Chat} when a ```message``` event is received and the Chat is not marked as active.
 * @module chat-engine-unread-messages
 * @requires {@link ChatEngine}
